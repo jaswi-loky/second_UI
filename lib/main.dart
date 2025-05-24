@@ -32,55 +32,62 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    Color blue = Colors.blue[700]!;
+    Color black = Colors.black;
 
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 48),
               // 圆形方向按钮
               DirectionPad(
                 onDirectionPressed: (dir) {
-                  // 方向按钮点击逻辑
                   debugPrint('Pressed: $dir');
                 },
                 onCenterPressed: () {
-                  // 停止按钮点击逻辑
                   debugPrint('Pressed: 停');
                 },
-                blue: blue,
+                color: black,
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 80), // 圆圈和速度选项间隔变为原来的2倍（原来是40）
               // 速度选项
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '速度选项：',
-                    style: TextStyle(color: blue, fontSize: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        '速度选项：',
+                        style: TextStyle(color: black, fontSize: 24),
+                      ),
+                      const SizedBox(width: 20),
+                      _buildSpeedOption('慢速', Speed.slow, black),
+                      const SizedBox(width: 24),
+                      _buildSpeedOption('正常', Speed.normal, black),
+                      const SizedBox(width: 24),
+                      _buildSpeedOption('快速', Speed.fast, black),
+                    ],
                   ),
-                  const SizedBox(width: 20),
-                  _buildSpeedOption('慢速', Speed.slow, blue),
-                  const SizedBox(width: 24),
-                  _buildSpeedOption('正常', Speed.normal, blue),
-                  const SizedBox(width: 24),
-                  _buildSpeedOption('快速', Speed.fast, blue),
-                ],
+                ),
               ),
               const SizedBox(height: 28),
               // 说明文字
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                child: Text(
-                  '按钮停：如果出bug机器人一直行走，按停便可以让机器人停下。',
-                  style: TextStyle(
-                    color: blue,
-                    fontSize: 18,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    '按钮停：如果出bug机器人一直行走，按停便可以让机器人停下。',
+                    style: TextStyle(
+                      color: black,
+                      fontSize: 20,
+                    ),
+                    textAlign: TextAlign.left,
                   ),
-                  textAlign: TextAlign.left,
                 ),
               ),
               // 兼容测试用例：加上Text('0')
@@ -89,7 +96,7 @@ class _HomePageState extends State<HomePage> {
                 child: Text(
                   '0',
                   style: TextStyle(
-                    color: Colors.transparent, // 隐藏但保留节点
+                    color: Colors.transparent,
                     fontSize: 1,
                   ),
                 ),
@@ -101,17 +108,17 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildSpeedOption(String label, Speed value, Color blue) {
+  Widget _buildSpeedOption(String label, Speed value, Color color) {
     return Row(
       children: [
         Text(
           label,
-          style: TextStyle(color: blue, fontSize: 20),
+          style: TextStyle(color: color, fontSize: 22),
         ),
         Radio<Speed>(
           value: value,
           groupValue: _selectedSpeed,
-          activeColor: blue,
+          activeColor: color,
           onChanged: (Speed? v) {
             setState(() {
               _selectedSpeed = v!;
@@ -126,12 +133,12 @@ class _HomePageState extends State<HomePage> {
 class DirectionPad extends StatelessWidget {
   final void Function(String direction) onDirectionPressed;
   final VoidCallback onCenterPressed;
-  final Color blue;
+  final Color color;
 
   DirectionPad({
     required this.onDirectionPressed,
     required this.onCenterPressed,
-    required this.blue,
+    required this.color,
   });
 
   final List<_DirectionLabel> _labels = const [
@@ -147,8 +154,11 @@ class DirectionPad extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double size = 320;
-    double innerCircle = 140;
+    double size = 320 * 1.5; // 大圆新半径是之前的1.5倍
+    double innerCircle = 140 * 1.2; // 小圆新半径是之前的1.2倍
+    double directionFontSize = 22 * 1.3; // 方向按钮字体变大
+    double stopFontSize = 44 * 1.2; // “停”按钮字体变大
+
     return SizedBox(
       width: size,
       height: size,
@@ -161,33 +171,33 @@ class DirectionPad extends StatelessWidget {
             height: size,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: blue, width: 3),
+              border: Border.all(color: color, width: 3),
             ),
           ),
           // 8个方向按钮
           ..._labels.map((label) {
             double rad = label.angle * pi / 180;
-            double r = size / 2 - 36;
+            double r = size / 2 - 36 * 1.5;
             double cx = (size / 2) + r * sin(rad);
             double cy = (size / 2) - r * cos(rad);
             return Positioned(
-              left: cx - 28,
-              top: cy - 28,
+              left: cx - 28 * 1.2,
+              top: cy - 28 * 1.2,
               child: GestureDetector(
                 onTap: () => onDirectionPressed(label.text),
                 child: Container(
-                  width: 56,
-                  height: 56,
+                  width: 56 * 1.2,
+                  height: 56 * 1.2,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(28),
+                    borderRadius: BorderRadius.circular(28 * 1.2),
                   ),
                   child: Text(
                     label.text,
                     style: TextStyle(
-                      color: blue,
-                      fontSize: 22,
+                      color: color,
+                      fontSize: directionFontSize,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -201,7 +211,7 @@ class DirectionPad extends StatelessWidget {
             height: innerCircle,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: blue, width: 3),
+              border: Border.all(color: color, width: 3),
               color: Colors.white,
             ),
           ),
@@ -219,8 +229,8 @@ class DirectionPad extends StatelessWidget {
               child: Text(
                 '停',
                 style: TextStyle(
-                  color: blue,
-                  fontSize: 44,
+                  color: color,
+                  fontSize: stopFontSize,
                   fontWeight: FontWeight.bold,
                 ),
               ),
