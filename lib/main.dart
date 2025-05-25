@@ -61,15 +61,15 @@ class _HomePageState extends State<HomePage> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        '速度选项：',
+                        'Speed：',
                         style: TextStyle(color: black, fontSize: 24),
                       ),
                       const SizedBox(width: 20),
-                      _buildSpeedOption('慢速', Speed.slow, black),
+                      _buildSpeedOption('slow', Speed.slow, black),
                       const SizedBox(width: 24),
-                      _buildSpeedOption('正常', Speed.normal, black),
+                      _buildSpeedOption('normal', Speed.normal, black),
                       const SizedBox(width: 24),
-                      _buildSpeedOption('快速', Speed.fast, black),
+                      _buildSpeedOption('fast', Speed.fast, black),
                     ],
                   ),
                 ),
@@ -81,7 +81,8 @@ class _HomePageState extends State<HomePage> {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    '按钮停：如果出bug机器人一直行走，按停便可以让机器人停下。',
+                     '''Stop button: If a bug occurs (e.g., the robot keeps moving even after the button is released),
+pressing "Stop" will halt the robot.''',
                     style: TextStyle(
                       color: black,
                       fontSize: 20,
@@ -142,14 +143,14 @@ class DirectionPad extends StatelessWidget {
   });
 
   final List<_DirectionLabel> _labels = const [
-    _DirectionLabel('前', 0),
-    _DirectionLabel('右前', 45),
-    _DirectionLabel('右', 90),
-    _DirectionLabel('右后', 135),
-    _DirectionLabel('后', 180),
-    _DirectionLabel('左后', 225),
-    _DirectionLabel('左', 270),
-    _DirectionLabel('左前', 315),
+    _DirectionLabel('^', 0),
+    _DirectionLabel('^', 45),
+    _DirectionLabel('^', 90),
+    _DirectionLabel('^', 135),
+    _DirectionLabel('^', 180),
+    _DirectionLabel('^', 225),
+    _DirectionLabel('^', 270),
+    _DirectionLabel('^', 315),
   ];
 
   @override
@@ -227,7 +228,7 @@ class DirectionPad extends StatelessWidget {
                 color: Colors.transparent,
               ),
               child: Text(
-                '停',
+                'Stop',
                 style: TextStyle(
                   color: color,
                   fontSize: stopFontSize,
