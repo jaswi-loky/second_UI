@@ -143,21 +143,21 @@ class DirectionPad extends StatelessWidget {
   });
 
   final List<_DirectionLabel> _labels = const [
-    _DirectionLabel('^', 0),
-    _DirectionLabel('^', 45),
-    _DirectionLabel('^', 90),
-    _DirectionLabel('^', 135),
-    _DirectionLabel('^', 180),
-    _DirectionLabel('^', 225),
-    _DirectionLabel('^', 270),
-    _DirectionLabel('^', 315),
+    _DirectionLabel('Forward', 0),
+    _DirectionLabel('Forward-Right', 45),
+    _DirectionLabel('Right', 90),
+    _DirectionLabel('Backward-Right', 135),
+    _DirectionLabel('Backward', 180),
+    _DirectionLabel('Backward-Left', 225),
+    _DirectionLabel('Left', 270),
+    _DirectionLabel('Forward-Left', 315),
   ];
 
   @override
   Widget build(BuildContext context) {
     double size = 320 * 1.5; // 大圆新半径是之前的1.5倍
     double innerCircle = 140 * 1.2; // 小圆新半径是之前的1.2倍
-    double directionFontSize = 22 * 1.3; // 方向按钮字体变大
+    double directionFontSize = 20; // 方向按钮字体变大
     double stopFontSize = 44 * 1.2; // “停”按钮字体变大
 
     return SizedBox(
