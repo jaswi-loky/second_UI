@@ -176,31 +176,103 @@ class DirectionPad extends StatelessWidget {
             ),
           ),
           // 8个方向按钮
-          ..._labels.map((label) {
-            double rad = label.angle * pi / 180;
-            double r = size / 2 - 36 * 1.5;
-            double cx = (size / 2) + r * sin(rad);
-            double cy = (size / 2) - r * cos(rad);
+          // 替换原来的 ..._labels.map((label) { ... }) 这一段
+
+          ..._labels.asMap().entries.map((entry) {
+              final i = entry.key;
+              final label = entry.value;
+              double rad = label.angle * pi / 180;
+              double r = size / 2 - 36 * 1.5;
+              double cx = (size / 2) + r * sin(rad);
+              double cy = (size / 2) - r * cos(rad);
+
+            // 你可以在这里为每个按钮单独调整
+            double dx = 0, dy = 0;
+            TextAlign align = TextAlign.center;
+            int maxLines = 1;
+            String text = label.text;
+
+            switch (i) {
+              case 0: // Forward
+                dx = -10;
+                dy = 10;
+                align = TextAlign.center;
+                maxLines = 1;
+                text = 'Forward';
+                break;
+              case 1: // Forward-Right
+                dx = -10;
+                dy = 20;
+                align = TextAlign.left;
+                maxLines = 1;
+                text = 'Forward-Right';
+                break;
+              case 2: // Right
+                dx = -10;
+                dy = 0;
+                align = TextAlign.center;
+                maxLines = 1;
+                text = 'Right';
+                break;
+              case 3: // Backward-Right
+                dx = -10;
+                dy = -20;
+                align = TextAlign.center;
+                maxLines = 1;
+                text = 'Backward-Right';
+                break;
+              case 4: // Backward
+                dx = 0;
+                dy = 0;
+                align = TextAlign.center;
+                maxLines = 1;
+                text = 'Backward';
+                break;
+              case 5: // Backward-Left
+                dx = 20;
+                dy = -15;
+                align = TextAlign.center;
+                maxLines = 1;
+                text = 'Backward-Left';
+                break;
+              case 6: // Left
+                dx = 0;
+                dy = 0;
+                align = TextAlign.center;
+                maxLines = 1;
+                text = 'Left';
+                break;
+              case 7: // Forward-Left
+                dx = 10;
+                dy = 20;
+                align = TextAlign.center;
+                maxLines = 1;
+                text = 'Forward-Left';
+                break;
+            }
+
             return Positioned(
-              left: cx - 28 * 1.2,
-              top: cy - 28 * 1.2,
+              left: cx - 200/2 + dx,
+              top: cy - 60/2 + dy,
               child: GestureDetector(
                 onTap: () => onDirectionPressed(label.text),
                 child: Container(
-                  width: 56 * 1.2,
-                  height: 56 * 1.2,
+                  width: 200,
+                  height: 60,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: Colors.transparent,
                     borderRadius: BorderRadius.circular(28 * 1.2),
                   ),
                   child: Text(
-                    label.text,
+                    text,
                     style: TextStyle(
                       color: color,
                       fontSize: directionFontSize,
                       fontWeight: FontWeight.bold,
                     ),
+                    textAlign: align,
+                    maxLines: maxLines,
                   ),
                 ),
               ),
